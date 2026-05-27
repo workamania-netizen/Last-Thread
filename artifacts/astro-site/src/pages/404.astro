@@ -1,0 +1,32 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Not found" description="That page seems to have wandered off.">
+  <section class="mx-auto max-w-xl px-6 py-24 text-center">
+    <p class="text-xs uppercase tracking-[0.2em] text-olive">404</p>
+    <h1 class="mt-3 font-serif text-5xl text-ink">
+      That one's wandered off.
+    </h1>
+    <p class="mt-6 text-muted">
+      The page you were looking for isn't here. Maybe it never was. Either
+      way, the guides are still where you left them.
+    </p>
+    <div class="mt-8 flex justify-center gap-4">
+      <a
+        href="/"
+        class="rounded-md bg-accent px-5 py-3 font-medium text-cream hover:bg-accent-dark"
+      >
+        Back to the homepage
+      </a>
+      <a
+        href="/guides"
+        class="rounded-md border border-tan px-5 py-3 font-medium text-ink hover:border-accent hover:text-accent"
+      >
+        Browse guides
+      </a>
+    </div>
+  </section>
+</BaseLayout>
