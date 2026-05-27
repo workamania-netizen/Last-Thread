@@ -20,17 +20,32 @@ Never use: "elevate", "curated experience", "thoughtfully designed",
 "luxury", "premium", startup-speak. Sentence case always. No mid-sentence 
 bold. Short sentences.
 
+## Repo layout
+
+This is a **pnpm workspace**. The Astro site lives at 
+`artifacts/astro-site/`. Every path in this document under `src/...` is 
+relative to that directory (i.e. the real path is 
+`artifacts/astro-site/src/...`).
+
+Other workspace packages (`lib/`, `scripts/`, `artifacts/api-server`, 
+`artifacts/mockup-sandbox`) are unrelated to this site and can be 
+ignored during Last Thread work.
+
+The root `package.json` has a `preinstall` guard that blocks `npm`. Use 
+`pnpm` for everything.
+
 ## Stack
 
-- Astro (latest stable) + TypeScript + Tailwind
+- Astro 5 + TypeScript + Tailwind v4 (via `@tailwindcss/vite`)
 - @astrojs/node adapter, standalone mode
-- @astrojs/sitemap
+- @astrojs/sitemap (site: `https://lastthread.co`)
 - @fontsource/fraunces, @fontsource/inter (self-hosted Google Fonts)
-- Zod for content schemas
+- Zod for content schemas (provided by `astro:content`)
+- `sharp` for `astro:assets` image optimization
 - `output: 'server'` with per-page `export const prerender = true` on 
   static pages. Endpoints (`/api/*`, `/go/[slug]`) do NOT prerender.
 
-## Design tokens (Tailwind)
+## Design tokens (Tailwind v4 `@theme` in `src/styles/global.css`)
 cream: #f5f1ea       (background)
 surface: #fbf8f2     (cards)
 ink: #1c1c1a         (primary text)
@@ -39,6 +54,11 @@ accent: #a44a2a      (rust copper — buttons, links)
 accent-dark: #82391f (hover)
 olive: #5a6b4d       (tags)
 tan: #d4c8b8         (borders)
+
+Tailwind v4 uses the `@theme` directive instead of `tailwind.config.mjs`. 
+Tokens above are declared as `--color-*` CSS custom properties inside the 
+`@theme {}` block and exposed as utilities like `bg-cream`, `text-accent`, 
+`border-tan`, etc.
 
 Fonts: Fraunces (serif, headlines, weights 400/500/600), Inter (sans, 
 body, weights 400/500). Line-height 1.7 for paragraphs.
@@ -79,14 +99,18 @@ Endpoint URL is in env var `SSD_INTAKE_URL`.
 Replit's Nix sandbox has recurring EADDRINUSE from zombie Node processes. 
 `pkill node` and `lsof` don't reliably release ports.
 
-Mitigation (already in package.json):
+Mitigation (already wired up):
 1. Use port 4321 (Astro's default — cleaner history than 3000/5000/5173)
-2. `prestart` script runs `fuser -k 4321/tcp 2>/dev/null || true` before 
-   every `dev` and `start`
+2. `predev` and `prestart` scripts in 
+   `artifacts/astro-site/package.json` run 
+   `fuser -k 4321/tcp 2>/dev/null || true` before every `dev` and `start`
 3. If issue persists: fork the Repl (~95% success rate)
 
-Port must agree across `.replit`, `astro.config.mjs`, and any PORT env 
-var. Mismatches cause silent failures.
+Port 4321 is configured in three places and they must stay in agreement:
+`.replit` (workflow `waitForPort` + `[[ports]]` block), 
+`artifacts/astro-site/astro.config.mjs` (default `PORT` value), and any 
+explicit `PORT` env var. The Replit workflow no longer sets `PORT` so the 
+astro config default stands.
 
 ## Tracking
 
@@ -105,13 +129,17 @@ Server-side logging in `/go/[slug].ts` is the authoritative outbound
 click record. Client-side beacon is supplementary.
 
 ## File structure
+All paths below are inside `artifacts/astro-site/`.
+
 src/
 ├── content/
 │   ├── config.ts           Zod schemas
+│   ├── _images/            local hero images (referenced by guide/journal
+│   │                       frontmatter as `../_images/...`)
 │   ├── guides/             markdown files
 │   └── journal/            markdown files
 ├── data/
-│   └── affiliates.ts       slug → destination URL map
+│   └── affiliates.ts       slug → destination URL map (+ getAffiliateUrl)
 ├── components/
 │   ├── Header.astro
 │   ├── Footer.astro
@@ -120,17 +148,17 @@ src/
 ├── layouts/
 │   └── BaseLayout.astro
 ├── styles/
-│   └── global.css          Tailwind + fonts + base styles
+│   └── global.css          Tailwind v4 @theme + fonts + base styles
 └── pages/
-├── index.astro
-├── about.astro
-├── disclosure.astro
-├── privacy.astro
-├── 404.astro
-├── guides/index.astro, [slug].astro
-├── journal/index.astro, [slug].astro
-├── go/[slug].ts
-└── api/subscribe.ts
+    ├── index.astro
+    ├── about.astro
+    ├── disclosure.astro
+    ├── privacy.astro
+    ├── 404.astro
+    ├── guides/index.astro, [slug].astro
+    ├── journal/index.astro, [slug].astro
+    ├── go/[slug].ts
+    └── api/subscribe.ts
 
 ## Conventions
 
@@ -154,11 +182,19 @@ In Replit Secrets:
 `.env.example` in repo documents these.
 
 ## Build & dev commands
-npm run dev      # http://localhost:4321
-npm run build    # produces /dist
-npm run start    # serves built output
 
-`prestart` runs before `dev` and `start` to kill zombie port processes.
+Use `pnpm` — the root has a `preinstall` guard that rejects `npm`. From 
+anywhere in the repo:
+
+    pnpm --filter @workspace/astro-site run dev      # http://localhost:4321
+    pnpm --filter @workspace/astro-site run build    # produces dist/
+    pnpm --filter @workspace/astro-site run start    # serves dist/server/entry.mjs
+
+Or `cd artifacts/astro-site && pnpm run dev` for shorter commands during 
+focused work.
+
+`predev` and `prestart` run before `dev` and `start` to kill zombie port 
+processes.
 
 ## What's out of scope (do not build)
 
