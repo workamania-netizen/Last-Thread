@@ -13,6 +13,13 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      // Allow Replit's preview proxy hostnames (e.g. *.janeway.replit.dev).
+      // Leading dot is Vite's wildcard for subdomains. Without this, the
+      // dev server rejects requests with "Blocked request. This host ... is
+      // not allowed."
+      allowedHosts: [".replit.dev", "localhost", "127.0.0.1"],
+    },
   },
   server: {
     port,
