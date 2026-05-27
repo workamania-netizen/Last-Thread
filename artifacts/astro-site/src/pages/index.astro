@@ -1,0 +1,188 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Card from "../components/Card.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <main>
+    <svg
+      class="astro-a"
+      width="495"
+      height="623"
+      viewBox="0 0 495 623"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M167.19 364.254C83.4786 364.254 0 404.819 0 404.819C0 404.819 141.781 19.4876 142.087 18.5637C146.434 6.06372 156.217 0 166 0C175.783 0 185.566 6.06372 189.913 18.5637C190.219 19.4876 331.924 404.819 331.924 404.819C331.924 404.819 248.997 364.254 167.19 364.254Z"
+        fill="url(#paint0_linear_1805_24664)"></path>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M317.602 354.298C317.602 354.298 412.87 415.619 495 403.067C495 403.067 432.925 337.353 419.582 300.472L317.602 354.298Z"
+        fill="url(#paint1_linear_1805_24664)"></path>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M291.792 451.824C291.792 451.824 260.148 612.424 246.659 622.975C237.894 629.575 226.973 623 222.39 612L291.792 451.824Z"
+        fill="url(#paint2_linear_1805_24664)"></path>
+      <defs>
+        <linearGradient
+          id="paint0_linear_1805_24664"
+          x1="166"
+          y1="0"
+          x2="166"
+          y2="404.819"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#C561F6"></stop>
+          <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient
+          id="paint1_linear_1805_24664"
+          x1="390"
+          y1="300"
+          x2="495"
+          y2="403"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#C561F6"></stop>
+          <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient
+          id="paint2_linear_1805_24664"
+          x1="246.659"
+          y1="622.975"
+          x2="246.659"
+          y2="451.824"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop stop-color="#C561F6"></stop>
+          <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+        </linearGradient>
+      </defs>
+    </svg>
+    <h1>Welcome to <span class="text-gradient">Astro</span></h1>
+    <p class="instructions">
+      To get started, open the directory <code>src/pages</code> in your project.<br />
+      <strong>Code Challenge:</strong> Tweak the "Welcome to Astro" message above.
+    </p>
+    <ul role="list" class="link-card-grid">
+      <Card
+        href="https://docs.astro.build/"
+        title="Documentation"
+        body="Learn how Astro works and explore the official API docs."
+      />
+      <Card
+        href="https://astro.build/integrations/"
+        title="Integrations"
+        body="Supercharge your project with new frameworks and libraries."
+      />
+      <Card
+        href="https://astro.build/themes/"
+        title="Themes"
+        body="Explore a galaxy of community-built starter themes."
+      />
+      <Card
+        href="https://astro.build/chat/"
+        title="Community"
+        body="Come say hi to our amazing Discord community. ❤️"
+      />
+    </ul>
+  </main>
+</Layout>
+
+<style>
+  :root {
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+  }
+
+  html {
+    font-family: system-ui, sans-serif;
+    background: #13151a;
+    background-size: 224px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  main {
+    margin: auto;
+    padding: 1rem;
+    width: 800px;
+    max-width: calc(100% - 2rem);
+    color: white;
+    font-size: 20px;
+    line-height: 1.6;
+  }
+
+  .astro-a {
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translatex(-50%);
+    width: 220px;
+    height: auto;
+    z-index: -1;
+  }
+
+  h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  .text-gradient {
+    background-image: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 400%;
+    background-position: 0%;
+  }
+
+  .instructions {
+    margin-bottom: 2rem;
+    border: 1px solid rgba(var(--accent-light), 25%);
+    background: linear-gradient(
+      rgba(var(--accent-dark), 66%),
+      rgba(var(--accent-dark), 33%)
+    );
+    padding: 1.5rem;
+    border-radius: 8px;
+  }
+
+  .instructions code {
+    font-size: 0.8em;
+    font-weight: bold;
+    background: rgba(var(--accent-light), 12%);
+    color: rgb(var(--accent-light));
+    border-radius: 4px;
+    padding: 0.3em 0.4em;
+  }
+
+  .instructions strong {
+    color: rgb(var(--accent-light));
+  }
+
+  .link-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 2rem;
+    padding: 0;
+  }
+</style>
