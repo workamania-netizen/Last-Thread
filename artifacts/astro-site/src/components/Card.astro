@@ -1,72 +1,89 @@
 ---
-interface Props {
-  title: string;
-  body: string;
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface GuideProps {
+  variant: "guide";
   href: string;
+  title: string;
+  description: string;
+  image: ImageMetadata;
+  imageAlt: string;
+  eyebrow?: string;
 }
 
-const { href, title, body } = Astro.props;
+interface ProductProps {
+  variant: "product";
+  href: string;
+  title: string;
+  blurb: string;
+  image: string;
+  imageAlt: string;
+  priceRange?: string;
+  slug?: string;
+}
+
+type Props = GuideProps | ProductProps;
+
+const props = Astro.props;
 ---
 
-<li class="link-card">
-  <a href={href}>
-    <h2>
-      {title}
-      <span>&rarr;</span>
-    </h2>
-    <p>
-      {body}
-    </p>
-  </a>
-</li>
-
-<style>
-  .link-card {
-    list-style: none;
-    display: flex;
-    padding: 0.15rem;
-    background-color: #23262d;
-    background-image: none;
-    background-size: 400%;
-    border-radius: 0.6rem;
-    background-position: 100%;
-    transition: background-position 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
-  }
-
-  .link-card > a {
-    width: 100%;
-    text-decoration: none;
-    line-height: 1.4;
-    padding: calc(1.5rem - 0.1rem);
-    border-radius: 0.5rem;
-    color: white;
-    background-color: #23262d;
-    opacity: 0.8;
-  }
-
-  h2 {
-    margin: 0;
-    font-size: 1.25rem;
-    transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  p {
-    margin-top: 0.5rem;
-    margin-bottom: 0;
-    color: #9ca3af;
-  }
-
-  .link-card:is(:hover, :focus-within) {
-    background-position: 0;
-    background-image: var(--accent-gradient);
-  }
-
-  .link-card:is(:hover, :focus-within) h2 {
-    color: rgb(var(--accent-light));
-  }
-
-  .link-card:is(:hover, :focus-within) a {
-    opacity: 1;
-  }
-</style>
+{
+  props.variant === "guide" ? (
+    <a
+      href={props.href}
+      class="group block overflow-hidden rounded-lg border border-tan bg-surface transition hover:border-accent"
+    >
+      <div class="aspect-[4/3] overflow-hidden bg-tan/40">
+        <Image
+          src={props.image}
+          alt={props.imageAlt}
+          widths={[400, 800, 1200]}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+        />
+      </div>
+      <div class="p-6">
+        {props.eyebrow && (
+          <p class="text-xs uppercase tracking-widest text-olive">
+            {props.eyebrow}
+          </p>
+        )}
+        <h3 class="mt-1 font-serif text-xl text-ink group-hover:text-accent">
+          {props.title}
+        </h3>
+        <p class="mt-2 text-sm text-muted">{props.description}</p>
+      </div>
+    </a>
+  ) : (
+    <article class="overflow-hidden rounded-lg border border-tan bg-surface">
+      <div class="aspect-[4/3] overflow-hidden bg-tan/40">
+        <img
+          src={props.image}
+          alt={props.imageAlt}
+          loading="lazy"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="p-6">
+        <h3 class="font-serif text-xl text-ink">{props.title}</h3>
+        <p class="mt-3 text-muted">{props.blurb}</p>
+        <div class="mt-5 flex items-center justify-between">
+          {props.priceRange && (
+            <span class="text-sm text-muted">{props.priceRange}</span>
+          )}
+          <a
+            href={props.href}
+            target="_blank"
+            rel="noopener sponsored"
+            data-outbound-slug={props.slug}
+            class="ml-auto inline-flex items-center gap-1 rounded-md bg-accent px-4 py-2 text-sm font-medium text-cream hover:bg-accent-dark"
+          >
+            Shop this
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </div>
+    </article>
+  )
+}

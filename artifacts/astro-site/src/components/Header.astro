@@ -1,0 +1,42 @@
+---
+const pathname = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
+---
+
+<header class="border-b border-tan/60 bg-cream">
+  <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+    <a href="/" class="font-serif text-xl font-medium tracking-tight text-ink hover:text-accent">
+      Last Thread<span class="text-accent">.</span>
+    </a>
+    <nav class="flex items-center gap-7 text-sm">
+      <a
+        href="/guides"
+        class:list={[
+          "text-ink hover:text-accent",
+          isActive("/guides") && "text-accent",
+        ]}
+      >
+        Guides
+      </a>
+      <a
+        href="/journal"
+        class:list={[
+          "text-ink hover:text-accent",
+          isActive("/journal") && "text-accent",
+        ]}
+      >
+        Journal
+      </a>
+      <a
+        href="/about"
+        class:list={[
+          "text-ink hover:text-accent",
+          isActive("/about") && "text-accent",
+        ]}
+      >
+        About
+      </a>
+    </nav>
+  </div>
+</header>

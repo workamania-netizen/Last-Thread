@@ -1,0 +1,70 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import EmailSignup from "../components/EmailSignup.astro";
+---
+
+<BaseLayout
+  title="About"
+  description="Last Thread Co. is a short list of good things for the men in your life. Here's the story."
+>
+  <article class="mx-auto max-w-2xl px-6 py-16 sm:py-24">
+    <p class="text-xs uppercase tracking-[0.2em] text-olive">About</p>
+    <h1 class="mt-3 font-serif text-4xl text-ink sm:text-5xl">
+      For the men who wear things out.
+    </h1>
+
+    <div class="prose-lt mt-10 space-y-6 text-ink/90">
+      <p>
+        Last Thread is a small editorial site about gifts for men. Not the
+        kind of gifts that get unwrapped, admired for ten minutes, and then
+        live in a drawer. The kind he'll actually use. The kind he'll wear
+        until the elbows go through and then ask if you can find another one.
+      </p>
+      <p>
+        Most of what we cover is unglamorous. Socks. Pocket knives. Cast iron.
+        A flashlight small enough to clip to a keychain. The dopp kit he's
+        been meaning to replace since his honeymoon. We try to write about
+        each one the way a friend would tell you about it — with enough
+        detail that you can tell whether it's right for him, and a sense of
+        humor about the whole thing.
+      </p>
+      <p>
+        We're not trying to teach you about "premium" anything. We're not
+        going to use the word "curated" if we can help it. We're not going to
+        tell you the watch costs three thousand dollars. We're going to tell
+        you that the strap he's worn for ten years is finally cracked and
+        here are three you could replace it with for the price of a tank of
+        gas.
+      </p>
+      <p>
+        A note about how this works: most of the product links on this site
+        are affiliate links. If you buy something we recommend, we get a
+        small commission. It doesn't cost you anything extra. We only link to
+        things we'd give to our own dads, brothers, and husbands. If we
+        wouldn't put one on the kitchen table at Christmas, it doesn't go on
+        the site.
+      </p>
+      <p>
+        Thanks for reading. If there's something you've been looking for and
+        can't find a good version of, write to us — we read everything.
+      </p>
+    </div>
+
+    <div class="mt-16">
+      <EmailSignup
+        heading="One good thing a week."
+        subhead="Subscribe and we'll send the best things we've found, on Saturdays."
+      />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose-lt p {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+  }
+</style>

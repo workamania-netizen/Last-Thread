@@ -1,0 +1,57 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Affiliate disclosure"
+  description="How Last Thread Co. makes money, and what that means for you."
+>
+  <article class="mx-auto max-w-2xl px-6 py-16 sm:py-24">
+    <p class="text-xs uppercase tracking-[0.2em] text-olive">Disclosure</p>
+    <h1 class="mt-3 font-serif text-4xl text-ink sm:text-5xl">
+      How we pay for the lights.
+    </h1>
+
+    <div class="prose-lt mt-10 space-y-6 text-ink/90">
+      <p>
+        Last Thread Co. is a participant in the Amazon Services LLC
+        Associates Program, an affiliate advertising program designed to
+        provide a means for sites to earn advertising fees by advertising and
+        linking to Amazon.com. We may also participate in other affiliate
+        programs from time to time.
+      </p>
+      <p>
+        In plain English: when you click a product link on this site and end
+        up buying something, we get a small commission from the retailer. It
+        doesn't change the price you pay. It's how a site like this one
+        stays free to read, and how we cover the cost of writing, photography,
+        and the very modest server bill.
+      </p>
+      <p>
+        A few things we promise about how we use those links. First, we
+        don't get paid to feature products, ever. No brand pays us to include
+        them in a guide, and no PR rep can talk their way onto the site by
+        sending us a sample. Second, we don't link to something we wouldn't
+        recommend to our own family. If it isn't good enough to give to your
+        dad, it isn't good enough for the site. Third, when we get something
+        wrong — and we will, sooner or later — we'll update the page and
+        leave a note about what changed.
+      </p>
+      <p>
+        If you ever feel like we recommended something that wasn't worth it,
+        we'd genuinely like to hear about it. The whole point of the project
+        is to be a trustworthy short list, not a long one.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose-lt p {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Privacy"
+  description="What we collect, what we don't, and what happens with your email."
+>
+  <article class="mx-auto max-w-2xl px-6 py-16 sm:py-24">
+    <p class="text-xs uppercase tracking-[0.2em] text-olive">Privacy</p>
+    <h1 class="mt-3 font-serif text-4xl text-ink sm:text-5xl">
+      What we collect, what we don't.
+    </h1>
+
+    <div class="prose-lt mt-10 space-y-6 text-ink/90">
+      <p>
+        We try to collect as little as possible. Here's the honest list of
+        what shows up in our records and why it's there.
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink">Email signups</h2>
+      <p>
+        If you give us your email address through the subscribe form, we add
+        it to our newsletter list so we can send you the Saturday email. We
+        derive a first name from the part of your email before the @ to make
+        the messages a little less robotic. That's it. We don't sell, rent,
+        or share the list. You can unsubscribe at the bottom of any email
+        and we'll take you off immediately.
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink">Analytics</h2>
+      <p>
+        We use Google Analytics 4 and the Meta Pixel to understand which
+        guides people read, which links get clicked, and which ads are worth
+        running. These tools set cookies and log standard things like the
+        page you visited, your approximate location, and your device type.
+        They do not log anything about who you are personally.
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink">Affiliate links</h2>
+      <p>
+        When you click a "shop this" link, your browser is redirected to a
+        retailer (usually Amazon) with a tag that tells them the visit came
+        from us. The retailer's own privacy policy then governs what they
+        do with your visit and purchase. We don't see what you bought, only
+        that you clicked.
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink">Cookies</h2>
+      <p>
+        The cookies on this site are set by the analytics tools above and by
+        Cloudflare, which handles our DNS. We don't set any of our own
+        tracking cookies.
+      </p>
+
+      <h2 class="font-serif text-2xl text-ink">Questions</h2>
+      <p>
+        If you'd like a copy of what we have on file for you, or you'd like
+        us to delete it, write to us and we'll take care of it within a few
+        days.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose-lt p {
+    font-size: 1.0625rem;
+    line-height: 1.75;
+    color: var(--color-ink);
+  }
+  .prose-lt h2 {
+    margin-top: 2rem;
+  }
+</style>
