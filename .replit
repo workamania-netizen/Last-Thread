@@ -2,7 +2,9 @@ modules = ["nodejs-24"]
 
 [deployment]
 router = "application"
-deploymentTarget = "autoscale"
+deploymentTarget = "gce"
+build = ["sh", "-c", "pnpm install && pnpm --filter @workspace/astro-site run build"]
+run = ["sh", "-c", "pnpm --filter @workspace/astro-site run start"]
 
 [deployment.postBuild]
 args = ["pnpm", "store", "prune"]
