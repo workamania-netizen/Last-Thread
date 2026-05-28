@@ -1,0 +1,93 @@
+---
+export const prerender = true;
+
+import {
+  getCatalog,
+  SOURCE_CTA_LABEL,
+  type Product,
+} from "../../data/products";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const { products } = await getCatalog();
+  return products.map((p) => ({
+    params: { slug: p.slug },
+    props: { product: p },
+  }));
+}
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const ctaLabel = SOURCE_CTA_LABEL[product.source];
+const formattedPrice =
+  product.price !== null
+    ? new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+        maximumFractionDigits: Number.isInteger(product.price) ? 0 : 2,
+      }).format(product.price)
+    : null;
+---
+
+<BaseLayout
+  title={product.name}
+  description={product.description}
+  ogType="article"
+  ogImage={product.imageUrl ?? "/og-default.jpg"}
+>
+  <article
+    class:list={[
+      "mx-auto px-6 sm:px-10 lg:px-12 py-16 sm:py-24",
+      product.imageUrl
+        ? "max-w-5xl grid lg:grid-cols-2 gap-10 lg:gap-16 items-start"
+        : "max-w-2xl",
+    ]}
+  >
+    {product.imageUrl && (
+      <figure class="aspect-[4/5] overflow-hidden bg-tan/40 rounded-sm">
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          loading="eager"
+          class="w-full h-full object-cover"
+        />
+      </figure>
+    )}
+
+    <div>
+      <p class="text-[11px] uppercase tracking-[0.18em] text-muted mb-3.5">
+        Product
+      </p>
+      <h1 class="font-serif font-medium text-3xl sm:text-4xl leading-[1.15] tracking-[-0.01em] text-ink text-pretty">
+        {product.name}
+      </h1>
+
+      {formattedPrice && (
+        <p class="mt-5 font-serif text-2xl text-ink">{formattedPrice}</p>
+      )}
+
+      <p class="mt-6 text-lg leading-[1.7] text-ink/90 max-w-[52ch]">
+        {product.description}
+      </p>
+
+      <div class="mt-8">
+        <a
+          href={`/go/${product.slug}`}
+          rel="noopener sponsored"
+          class="group inline-flex items-center gap-2.5 bg-ink text-surface px-6 py-3.5 text-[13px] font-medium tracking-[0.06em] uppercase no-underline rounded-[2px] hover:bg-accent-dark transition-colors"
+        >
+          {ctaLabel}
+        </a>
+      </div>
+
+      <p class="mt-10 text-xs text-muted max-w-[52ch] leading-relaxed">
+        Last Thread Co. is an affiliate. If you buy through this link the
+        retailer pays us a small commission. Costs you nothing, keeps the
+        lights on. We only link to things we'd give to our own dads.
+      </p>
+    </div>
+  </article>
+</BaseLayout>
