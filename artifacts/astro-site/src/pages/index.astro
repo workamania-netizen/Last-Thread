@@ -1,49 +1,30 @@
 ---
 export const prerender = true;
 
-import { getEntry } from "astro:content";
-import { Image } from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import EmailSignup from "../components/EmailSignup.astro";
+import {
+  getSectionsInOrder,
+  getProductsForSection,
+  type Product,
+  type Section,
+} from "../data/products";
 
-const [fathersDay, cabinSocks, foundingPost] = await Promise.all([
-  getEntry("guides", "fathers-day-gifts"),
-  getEntry("guides", "cabin-sock-edit"),
-  getEntry("journal", "he-still-uses-the-mug-his-dad-gave-him"),
-]);
+const sectionsInOrder = await getSectionsInOrder();
 
-if (!fathersDay || !cabinSocks || !foundingPost) {
-  throw new Error(
-    "Homepage: one or more required content entries are missing.",
-  );
+const populatedSections: { section: Section; products: Product[] }[] = [];
+for (const section of sectionsInOrder) {
+  const products = await getProductsForSection(section.id);
+  if (products.length > 0) populatedSections.push({ section, products });
 }
 
-const cards = [
-  {
-    href: `/guides/${fathersDay.slug}`,
-    label: "Father's day",
-    title: fathersDay.data.title,
-    image: fathersDay.data.heroImage,
-    imageAlt: fathersDay.data.heroAlt,
-    meta: `${fathersDay.data.items.length} picks`,
-  },
-  {
-    href: `/guides/${cabinSocks.slug}`,
-    label: "Cabin season",
-    title: cabinSocks.data.title,
-    image: cabinSocks.data.heroImage,
-    imageAlt: cabinSocks.data.heroAlt,
-    meta: `${cabinSocks.data.items.length} picks`,
-  },
-  {
-    href: `/journal/${foundingPost.slug}`,
-    label: "Journal",
-    title: foundingPost.data.title,
-    image: foundingPost.data.heroImage,
-    imageAlt: foundingPost.data.heroAlt,
-    meta: "5 min read",
-  },
-];
+function formatPrice(price: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: Number.isInteger(price) ? 0 : 2,
+  }).format(price);
+}
 
 // Placeholder hero stills from the v2 mockup. At least one is off-brand
 // (a volcano) — these get swapped for localized photography in a follow-up
@@ -131,88 +112,94 @@ const totalSlides = String(heroSlides.length).padStart(2, "0");
     </div>
   </section>
 
-  <section class="bg-cream pb-[120px] border-t border-tan">
-    <div class="flex items-end justify-between px-12 pt-10 mb-9">
-      <div>
-        {/* Neutralized from mockup's "The Father's day shortlist" — three
-            cards span Father's day, cabin season, and the founding journal
-            post, so the broader eyebrow reads truer. */}
-        <div class="text-[11px] uppercase tracking-[0.18em] text-muted mb-3.5">
-          The shortlist
-        </div>
-        <h2 class="font-serif font-medium text-4xl tracking-[-0.01em] leading-none">
-          Guides and goods for him.
-        </h2>
-      </div>
-      <div class="flex gap-2">
-        <button
-          type="button"
-          class="w-[46px] h-[46px] border border-tan bg-transparent text-ink flex items-center justify-center rounded-full transition-colors hover:bg-surface hover:border-ink"
-          aria-label="Previous"
-          data-rail-prev
+  {populatedSections.length > 0 && (
+    <div class="bg-cream border-t border-tan pt-10 pb-[120px]">
+      {populatedSections.map(({ section, products }) => (
+        <section
+          class="mb-16 last:mb-0"
+          data-rail-section
+          aria-label={section.name || "Products"}
         >
-          <svg
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            class="w-4 h-4"
-            aria-hidden="true"
-          >
-            <path d="M10 3L5 8l5 5" />
-          </svg>
-        </button>
-        <button
-          type="button"
-          class="w-[46px] h-[46px] border border-tan bg-transparent text-ink flex items-center justify-center rounded-full transition-colors hover:bg-surface hover:border-ink"
-          aria-label="Next"
-          data-rail-next
-        >
-          <svg
-            viewBox="0 0 16 16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            class="w-4 h-4"
-            aria-hidden="true"
-          >
-            <path d="M6 3l5 5-5 5" />
-          </svg>
-        </button>
-      </div>
-    </div>
+          {section.name && (
+            <div class="flex items-end justify-between px-12 mb-9">
+              <h2 class="font-serif font-medium text-4xl tracking-[-0.01em] leading-none">
+                {section.name}
+              </h2>
+              <div class="flex gap-2">
+                <button
+                  type="button"
+                  class="w-[46px] h-[46px] border border-tan bg-transparent text-ink flex items-center justify-center rounded-full transition-colors hover:bg-surface hover:border-ink"
+                  aria-label="Previous"
+                  data-rail-prev
+                >
+                  <svg
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    class="w-4 h-4"
+                    aria-hidden="true"
+                  >
+                    <path d="M10 3L5 8l5 5" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="w-[46px] h-[46px] border border-tan bg-transparent text-ink flex items-center justify-center rounded-full transition-colors hover:bg-surface hover:border-ink"
+                  aria-label="Next"
+                  data-rail-next
+                >
+                  <svg
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    class="w-4 h-4"
+                    aria-hidden="true"
+                  >
+                    <path d="M6 3l5 5-5 5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
 
-    <div class="relative">
-      <div
-        class="rail flex gap-7 overflow-x-auto snap-x snap-mandatory px-12 pb-6"
-        data-rail
-      >
-        {cards.map((card) => (
-          <a
-            href={card.href}
-            class="card group flex-none w-80 snap-start no-underline text-inherit block"
-          >
-            <div class="aspect-[4/5] overflow-hidden bg-[#2a2724] mb-4">
-              <Image
-                src={card.image}
-                alt={card.imageAlt}
-                widths={[320, 640, 960]}
-                sizes="320px"
-                class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:-translate-y-1"
-              />
+          <div class="relative">
+            <div
+              class="rail flex gap-7 overflow-x-auto snap-x snap-mandatory px-12 pb-6"
+              data-rail
+            >
+              {products.map((product) => (
+                <a
+                  href={`/products/${product.slug}`}
+                  class="card group flex-none w-80 snap-start no-underline text-inherit block"
+                >
+                  <div class="aspect-[4/5] overflow-hidden bg-tan/40 mb-4">
+                    {product.imageUrl && (
+                      <img
+                        src={product.imageUrl}
+                        alt={product.name}
+                        loading="lazy"
+                        class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:-translate-y-1"
+                      />
+                    )}
+                  </div>
+                  <h3 class="font-serif font-medium text-xl leading-[1.2] max-w-[280px] text-pretty">
+                    {product.name}
+                  </h3>
+                  {product.price !== null && (
+                    <div class="text-[13px] text-muted mt-1.5">
+                      {formatPrice(product.price)}
+                    </div>
+                  )}
+                </a>
+              ))}
             </div>
-            <div class="text-[11px] uppercase tracking-[0.18em] text-accent font-medium mb-2">
-              {card.label}
-            </div>
-            <h3 class="font-serif font-medium text-xl leading-[1.2] max-w-[280px] text-pretty">
-              {card.title}
-            </h3>
-            <div class="text-[13px] text-muted mt-1.5">{card.meta}</div>
-          </a>
-        ))}
-      </div>
+          </div>
+        </section>
+      ))}
     </div>
-  </section>
+  )}
 
   <section class="bg-surface py-24 px-12 border-t border-tan">
     <div class="max-w-[640px] mx-auto text-center">
@@ -345,16 +332,23 @@ const totalSlides = String(heroSlides.length).padStart(2, "0");
       }
     }
 
-    const rail = document.querySelector<HTMLElement>("[data-rail]");
-    const prev = document.querySelector<HTMLElement>("[data-rail-prev]");
-    const next = document.querySelector<HTMLElement>("[data-rail-next]");
-    if (rail && prev && next) {
-      prev.addEventListener("click", () =>
-        rail.scrollBy({ left: -380, behavior: "smooth" }),
-      );
-      next.addEventListener("click", () =>
-        rail.scrollBy({ left: 380, behavior: "smooth" }),
-      );
-    }
+    // Scoped per section: prev/next buttons only exist when section.name
+    // is non-empty, but the rail itself is always present. Looking them
+    // up within the section avoids any cross-rail wiring.
+    document
+      .querySelectorAll<HTMLElement>("[data-rail-section]")
+      .forEach((section) => {
+        const rail = section.querySelector<HTMLElement>("[data-rail]");
+        const prev = section.querySelector<HTMLElement>("[data-rail-prev]");
+        const next = section.querySelector<HTMLElement>("[data-rail-next]");
+        if (rail && prev && next) {
+          prev.addEventListener("click", () =>
+            rail.scrollBy({ left: -380, behavior: "smooth" }),
+          );
+          next.addEventListener("click", () =>
+            rail.scrollBy({ left: 380, behavior: "smooth" }),
+          );
+        }
+      });
   })();
 </script>
