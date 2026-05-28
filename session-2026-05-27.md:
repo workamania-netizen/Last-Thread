@@ -1,0 +1,29 @@
+## Session — 2026-05-27 (build night)
+
+**Outcome:** Stage 1 site live at https://lastthread.co and https://www.lastthread.co.
+
+### Shipped
+- Astro server-mode build deployed on Replit Reserved VM Basic ($7/mo)
+- Both apex and www custom domains bound, Cloudflare DNS clean (DNS only, no proxy)
+- 9 prerendered pages, sitemap, 13 optimized image variants
+- /go/[slug] redirects and /api/subscribe endpoint live
+- Content: Father's Day guide (15 items), cabin sock edit (7 items), founding journal post — all on brand voice
+
+### Fixed during session
+- Removed leftover workspace artifacts (api-server, mockup-sandbox) — were confusing Replit's monorepo deployment auto-discovery, which kept booting api-server instead of astro-site
+- Changed .replit deploymentTarget from "autoscale" to "gce"
+- Added explicit build and run commands to .replit [deployment] block
+- Added '.replit.dev' to Vite server.allowedHosts in astro.config.mjs (dev preview was being blocked)
+- Cloudflare: deleted old Namecheap parking A record and CNAME, replaced with Replit A records (34.111.179.208) for apex and www, added Replit TXT verify records
+
+### Still pending (track, don't engineer)
+- Real hero photography — currently 3 placeholder gradient JPGs in src/content/_images/. Items[].image URLs are real Unsplash and load fine in browser.
+- Real affiliate links — currently amazon.com/s?k=... search URLs in src/data/affiliates.ts
+- Meta Pixel ID — blocked on Facebook account dispute, may not get one
+- GA4 Measurement ID — pending generation
+- Amazon Associates application — pending
+- Ad channel — Meta likely out, leaning Pinterest + Google Ads
+- "fourteen things" vs 15 items copy mismatch in Father's Day guide title — cosmetic
+
+### Days to Father's Day
+~3.5 weeks (deadline June 21, 2026)
