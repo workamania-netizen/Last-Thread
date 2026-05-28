@@ -41,26 +41,6 @@ const isActive = (href: string) =>
     </a>
     <nav class="flex items-center gap-7 text-sm">
       <a
-        href="/guides"
-        class:list={[
-          "hover:text-accent",
-          overlay ? "text-surface" : "text-ink",
-          isActive("/guides") && "text-accent",
-        ]}
-      >
-        Guides
-      </a>
-      <a
-        href="/journal"
-        class:list={[
-          "hover:text-accent",
-          overlay ? "text-surface" : "text-ink",
-          isActive("/journal") && "text-accent",
-        ]}
-      >
-        Journal
-      </a>
-      <a
         href="/about"
         class:list={[
           "hover:text-accent",
