@@ -27,9 +27,8 @@ This is a **pnpm workspace**. The Astro site lives at
 relative to that directory (i.e. the real path is 
 `artifacts/astro-site/src/...`).
 
-Other workspace packages (`lib/`, `scripts/`, `artifacts/api-server`, 
-`artifacts/mockup-sandbox`) are unrelated to this site and can be 
-ignored during Last Thread work.
+Other workspace packages (`lib/`, `scripts/`) are unrelated to this 
+site and can be ignored during Last Thread work.
 
 The root `package.json` has a `preinstall` guard that blocks `npm`. Use 
 `pnpm` for everything.
