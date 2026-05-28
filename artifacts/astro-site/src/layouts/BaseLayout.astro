@@ -8,6 +8,13 @@ interface Props {
   description?: string;
   ogImage?: string;
   ogType?: "website" | "article";
+  /**
+   * Render the header transparently over the first section instead of as
+   * a cream bar pushing content down. Used by routes whose hero is
+   * full-bleed (currently the homepage). Default false — every other
+   * route renders the standard cream header exactly as before.
+   */
+  heroOverlayHeader?: boolean;
 }
 
 const {
@@ -15,6 +22,7 @@ const {
   description = "Gifts for the men who wear things out. Curated by Last Thread.",
   ogImage = "/og-default.jpg",
   ogType = "website",
+  heroOverlayHeader = false,
 } = Astro.props;
 
 const pixelId = import.meta.env.PUBLIC_META_PIXEL_ID;
@@ -85,7 +93,7 @@ const fullTitle = title === "Last Thread Co." ? title : `${title} · Last Thread
     )}
   </head>
   <body class="bg-cream text-ink">
-    <Header />
+    <Header overlay={heroOverlayHeader} />
     <main>
       <slot />
     </main>

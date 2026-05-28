@@ -1,19 +1,50 @@
 ---
+interface Props {
+  /**
+   * Overlay mode: header floats transparently over a dark hero, links in
+   * surface-white, inner wrapper drops max-width so the wordmark aligns
+   * with the hero's left-12 content edge. Default (false) keeps the
+   * cream-bg, ink-text, max-w-5xl-centered header used on every other
+   * route — additive only, no impact on non-opted-in pages.
+   */
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+
 const pathname = Astro.url.pathname;
 const isActive = (href: string) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 ---
 
-<header class="border-b border-tan/60 bg-cream">
-  <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-    <a href="/" class="font-serif text-xl font-medium tracking-tight text-ink hover:text-accent">
+<header
+  class:list={[
+    overlay
+      ? "absolute inset-x-0 top-0 z-50 bg-transparent"
+      : "border-b border-tan/60 bg-cream",
+  ]}
+>
+  <div
+    class:list={[
+      "flex items-center justify-between py-5",
+      overlay ? "px-12" : "mx-auto max-w-5xl px-6",
+    ]}
+  >
+    <a
+      href="/"
+      class:list={[
+        "font-serif text-xl font-medium tracking-tight hover:text-accent",
+        overlay ? "text-surface" : "text-ink",
+      ]}
+    >
       Last Thread<span class="text-accent">.</span>
     </a>
     <nav class="flex items-center gap-7 text-sm">
       <a
         href="/guides"
         class:list={[
-          "text-ink hover:text-accent",
+          "hover:text-accent",
+          overlay ? "text-surface" : "text-ink",
           isActive("/guides") && "text-accent",
         ]}
       >
@@ -22,7 +53,8 @@ const isActive = (href: string) =>
       <a
         href="/journal"
         class:list={[
-          "text-ink hover:text-accent",
+          "hover:text-accent",
+          overlay ? "text-surface" : "text-ink",
           isActive("/journal") && "text-accent",
         ]}
       >
@@ -31,7 +63,8 @@ const isActive = (href: string) =>
       <a
         href="/about"
         class:list={[
-          "text-ink hover:text-accent",
+          "hover:text-accent",
+          overlay ? "text-surface" : "text-ink",
           isActive("/about") && "text-accent",
         ]}
       >

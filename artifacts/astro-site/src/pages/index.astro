@@ -21,100 +21,62 @@ if (!fathersDay || !cabinSocks || !foundingPost) {
 const cards = [
   {
     href: `/guides/${fathersDay.slug}`,
-    label: "Guide",
-    sublabel: "Father's day",
+    label: "Father's day",
     title: fathersDay.data.title,
     image: fathersDay.data.heroImage,
     imageAlt: fathersDay.data.heroAlt,
-    foot: `${fathersDay.data.items.length} picks`,
+    meta: `${fathersDay.data.items.length} picks`,
   },
   {
     href: `/guides/${cabinSocks.slug}`,
-    label: "Guide",
-    sublabel: "Cabin season",
+    label: "Cabin season",
     title: cabinSocks.data.title,
     image: cabinSocks.data.heroImage,
     imageAlt: cabinSocks.data.heroAlt,
-    foot: `${cabinSocks.data.items.length} picks`,
+    meta: `${cabinSocks.data.items.length} picks`,
   },
   {
     href: `/journal/${foundingPost.slug}`,
     label: "Journal",
-    sublabel: "The first one",
     title: foundingPost.data.title,
     image: foundingPost.data.heroImage,
     imageAlt: foundingPost.data.heroAlt,
-    foot: "5 min read",
+    meta: "5 min read",
   },
 ];
 
+// Placeholder hero stills from the v2 mockup. At least one is off-brand
+// (a volcano) — these get swapped for localized photography in a follow-up
+// before paid traffic, per the founder. Don't reach for image fixes here.
 const heroSlides = [
-  {
-    src: "https://images.unsplash.com/photo-1452830978618-d6feae7d0ffa?w=2000&q=85&auto=format&fit=crop",
-    caption: "Frame 01 / 05 — The workbench, 4:12pm",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1517825738774-7de9363ef735?w=2000&q=85&auto=format&fit=crop",
-    caption: "Frame 02 / 05 — The hearth, last light",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1542293787938-c9e299b88010?w=2000&q=85&auto=format&fit=crop",
-    caption: "Frame 03 / 05 — Workshop, March",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?w=2000&q=85&auto=format&fit=crop",
-    caption: "Frame 04 / 05 — Boots by the door",
-  },
-  {
-    src: "https://images.unsplash.com/photo-1481833761820-0509d3217039?w=2000&q=85&auto=format&fit=crop",
-    caption: "Frame 05 / 05 — Flannel, well used",
-  },
+  "https://images.unsplash.com/photo-1517825738774-7de9363ef735?w=1800&q=85&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1452830978618-d6feae7d0ffa?w=1800&q=85&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?w=1800&q=85&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1542293787938-c9e299b88010?w=1800&q=85&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1481833761820-0509d3217039?w=1800&q=85&auto=format&fit=crop",
 ];
 
-const captions = heroSlides.map((s) => s.caption);
+const totalSlides = String(heroSlides.length).padStart(2, "0");
 ---
 
 <BaseLayout
   title="Last Thread Co."
   description="Gifts for the men who wear things out. Editorial guides, no filler."
+  heroOverlayHeader={true}
 >
-  <section class="px-6 sm:px-10 lg:px-14 pt-14 pb-9">
-    <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto] items-end gap-8">
-      <div>
-        <div class="eyebrow flex items-center gap-3.5 text-[11px] uppercase tracking-[0.22em] text-accent mb-[18px]">
-          Father's day · 2026
-        </div>
-        <h1 class="font-serif font-medium text-5xl sm:text-6xl lg:text-[88px] leading-[0.96] tracking-[-0.025em] text-ink max-w-[1080px] text-balance">
-          For the men who<br />wear things <em class="text-accent-dark font-medium">out</em>.
-        </h1>
-      </div>
-      <div class="flex flex-col items-start lg:items-end gap-3.5 pb-1.5">
-        <p class="text-[13px] text-muted max-w-[260px] lg:text-right leading-[1.4]">
-          A short list of gifts and field guides for the kind of man who keeps his pocket knife sharp.
-        </p>
-        <a
-          href="/guides/fathers-day-gifts"
-          class="inline-flex items-center gap-2.5 bg-ink text-surface px-[22px] py-[14px] text-xs font-medium tracking-[0.14em] uppercase no-underline hover:bg-accent-dark transition-colors"
-        >
-          See the guide <span aria-hidden="true">→</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
   <section
-    class="hero relative w-full h-[60vh] min-h-[520px] overflow-hidden bg-ink"
+    class="hero relative w-full h-[80vh] min-h-[640px] overflow-hidden bg-ink"
     aria-roledescription="carousel"
     aria-label="Field reel"
-    data-hero-reel
+    data-hero
   >
-    {heroSlides.map((slide, i) => (
+    {heroSlides.map((src, i) => (
       <div
         class:list={[
-          "hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1400ms] ease-out",
+          "hero-slide absolute inset-0 bg-cover bg-center transition-opacity duration-[1600ms] ease-[cubic-bezier(.4,0,.2,1)]",
           i === 0 && "is-active",
         ]}
-        style={`background-image: url('${slide.src}')`}
+        style={`background-image: url('${src}')`}
         role="group"
         aria-roledescription="slide"
         aria-label={`${i + 1} of ${heroSlides.length}`}
@@ -123,25 +85,39 @@ const captions = heroSlides.map((s) => s.caption);
       />
     ))}
 
-    <div class="hero-overlay absolute inset-0 z-[2] pointer-events-none"></div>
-
-    <div class="absolute left-6 sm:left-10 lg:left-14 top-6 z-[5] flex items-center gap-3 text-surface text-[11px] uppercase tracking-[0.2em] opacity-85">
-      <span class="blip block w-1.5 h-1.5 rounded-full bg-accent" aria-hidden="true"></span>
-      <span>Now showing · Field reel 01</span>
+    <div
+      class="absolute left-12 right-12 bottom-[42px] z-[5] flex items-end justify-between gap-8 text-surface"
+    >
+      <h1 class="font-serif font-medium text-5xl sm:text-6xl lg:text-[64px] leading-[1.02] tracking-[-0.015em] max-w-[760px] text-pretty">
+        For the men who<br />wear things out.
+      </h1>
+      <a
+        href="/guides/fathers-day-gifts"
+        class="group inline-flex items-center gap-2.5 bg-surface text-ink px-[22px] py-[14px] text-[13px] font-medium tracking-[0.06em] uppercase no-underline rounded-[2px] whitespace-nowrap transition-colors hover:bg-white"
+      >
+        See the Father's day guide
+        <span
+          class="inline-block transition-transform duration-200 group-hover:translate-x-1"
+          aria-hidden="true"
+        >→</span>
+      </a>
     </div>
 
-    <div class="absolute left-6 sm:left-10 lg:left-14 right-6 sm:right-10 lg:right-14 bottom-6 z-[5] flex items-end justify-between text-surface text-[11px] uppercase tracking-[0.2em]">
-      <div
-        class="font-serif text-[13px] tracking-[0.05em] opacity-65 normal-case"
-        data-frame-id
-      >
-        {heroSlides[0].caption}
-      </div>
-      <div class="flex gap-1.5" data-ticks aria-label="Slide controls"></div>
+    <div
+      class="absolute bottom-[42px] left-1/2 -translate-x-1/2 z-[6] flex gap-2.5 items-center"
+      data-dots
+      aria-label="Slide controls"
+    ></div>
+
+    <div
+      class="absolute right-12 top-[34px] z-[6] text-surface font-serif text-sm tracking-[0.04em] flex gap-1.5 items-baseline [text-shadow:0_1px_8px_rgba(0,0,0,.3)]"
+    >
+      <span class="text-[22px]" data-slide-cur>01</span>
+      <span class="opacity-[0.55]">/ {totalSlides}</span>
     </div>
   </section>
 
-  <section class="py-24 px-6 sm:px-10 lg:px-14 flex justify-center">
+  <section class="py-24 px-12 flex justify-center">
     <div class="max-w-[720px]">
       <div class="font-serif italic text-sm text-accent mb-[22px] tracking-[0.02em]">
         — On the record
@@ -155,42 +131,49 @@ const captions = heroSlides.map((s) => s.caption);
     </div>
   </section>
 
-  <section class="bg-cream pb-24 border-t border-tan">
-    <div class="flex items-center justify-between px-6 sm:px-10 lg:px-14 pt-9 pb-6">
-      <h2 class="font-serif font-medium text-2xl tracking-[-0.01em] leading-none">
-        The shortlist
-        <span class="text-muted italic ml-2.5 text-lg">three things</span>
-      </h2>
-      <div class="flex gap-1.5">
+  <section class="bg-cream pb-[120px] border-t border-tan">
+    <div class="flex items-end justify-between px-12 pt-10 mb-9">
+      <div>
+        {/* Neutralized from mockup's "The Father's day shortlist" — three
+            cards span Father's day, cabin season, and the founding journal
+            post, so the broader eyebrow reads truer. */}
+        <div class="text-[11px] uppercase tracking-[0.18em] text-muted mb-3.5">
+          The shortlist
+        </div>
+        <h2 class="font-serif font-medium text-4xl tracking-[-0.01em] leading-none">
+          Guides and goods for him.
+        </h2>
+      </div>
+      <div class="flex gap-2">
         <button
-          class="w-[42px] h-[42px] border border-tan bg-transparent text-ink flex items-center justify-center hover:bg-surface transition-colors"
-          data-rail-prev
-          aria-label="Previous"
           type="button"
+          class="w-[46px] h-[46px] border border-tan bg-transparent text-ink flex items-center justify-center rounded-full transition-colors hover:bg-surface hover:border-ink"
+          aria-label="Previous"
+          data-rail-prev
         >
           <svg
             viewBox="0 0 16 16"
             fill="none"
             stroke="currentColor"
             stroke-width="1.5"
-            class="w-3.5 h-3.5"
+            class="w-4 h-4"
             aria-hidden="true"
           >
             <path d="M10 3L5 8l5 5" />
           </svg>
         </button>
         <button
-          class="w-[42px] h-[42px] border border-tan bg-transparent text-ink flex items-center justify-center hover:bg-surface transition-colors"
-          data-rail-next
-          aria-label="Next"
           type="button"
+          class="w-[46px] h-[46px] border border-tan bg-transparent text-ink flex items-center justify-center rounded-full transition-colors hover:bg-surface hover:border-ink"
+          aria-label="Next"
+          data-rail-next
         >
           <svg
             viewBox="0 0 16 16"
             fill="none"
             stroke="currentColor"
             stroke-width="1.5"
-            class="w-3.5 h-3.5"
+            class="w-4 h-4"
             aria-hidden="true"
           >
             <path d="M6 3l5 5-5 5" />
@@ -199,45 +182,39 @@ const captions = heroSlides.map((s) => s.caption);
       </div>
     </div>
 
-    <div class="rail-wrap relative">
+    <div class="relative">
       <div
-        class="rail flex gap-[2px] overflow-x-auto snap-x snap-mandatory px-6 sm:px-10 lg:px-14"
+        class="rail flex gap-7 overflow-x-auto snap-x snap-mandatory px-12 pb-6"
         data-rail
       >
-        {cards.map((card, i) => (
+        {cards.map((card) => (
           <a
             href={card.href}
-            class="card group flex-none w-80 snap-start bg-surface no-underline text-inherit block"
-            style={i < cards.length - 1 ? "border-right: 1px solid var(--color-tan)" : undefined}
+            class="card group flex-none w-80 snap-start no-underline text-inherit block"
           >
-            <div class="aspect-square overflow-hidden bg-ink/80">
+            <div class="aspect-[4/5] overflow-hidden bg-[#2a2724] mb-4">
               <Image
                 src={card.image}
                 alt={card.imageAlt}
                 widths={[320, 640, 960]}
                 sizes="320px"
-                class="w-full h-full object-cover transition group-hover:brightness-110"
+                class="w-full h-full object-cover transition-transform duration-[400ms] ease-out group-hover:-translate-y-1"
               />
             </div>
-            <div class="pt-[18px] px-5 pb-6">
-              <div class="text-[10px] uppercase tracking-[0.22em] text-muted mb-2.5 flex gap-2.5 items-center">
-                <span class="text-accent font-medium">{card.label}</span>
-                <span>{card.sublabel}</span>
-              </div>
-              <h3 class="font-serif font-medium text-xl leading-[1.22] text-pretty">
-                {card.title}
-              </h3>
-              <div class="mt-3.5 pt-3.5 border-t border-tan text-xs text-muted">
-                {card.foot}
-              </div>
+            <div class="text-[11px] uppercase tracking-[0.18em] text-accent font-medium mb-2">
+              {card.label}
             </div>
+            <h3 class="font-serif font-medium text-xl leading-[1.2] max-w-[280px] text-pretty">
+              {card.title}
+            </h3>
+            <div class="text-[13px] text-muted mt-1.5">{card.meta}</div>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <section class="bg-surface py-24 px-6 sm:px-10 lg:px-14 border-t border-tan">
+  <section class="bg-surface py-24 px-12 border-t border-tan">
     <div class="max-w-[640px] mx-auto text-center">
       <div class="text-[11px] uppercase tracking-[0.22em] text-accent mb-[18px]">
         The newsletter
@@ -254,143 +231,130 @@ const captions = heroSlides.map((s) => s.caption);
 </BaseLayout>
 
 <style>
-  /* Rust dash before the eyebrow label */
-  .eyebrow::before {
+  /* Two-stop legibility gradient. Top band is strengthened from the v2
+     mockup spec (22%→0 over 18%) to 55%→0 over 22% so the surface-white
+     overlay nav stays readable against any slide. Bottom band unchanged. */
+  .hero::before {
     content: "";
-    display: inline-block;
-    width: 38px;
-    height: 1px;
-    background: var(--color-accent);
-    flex-shrink: 0;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(14, 13, 11, 0.55) 0%, rgba(14, 13, 11, 0) 22%),
+      linear-gradient(0deg, rgba(14, 13, 11, 0.78) 0%, rgba(14, 13, 11, 0) 40%);
   }
 
-  /* Letterbox fade — Tailwind gradient utilities can't express the
-     transparent-to-60% stop cleanly enough to be worth it. */
-  .hero-overlay {
-    background: linear-gradient(
-      180deg,
-      rgba(14, 13, 11, 0) 60%,
-      rgba(14, 13, 11, 0.45) 100%
-    );
+  /* Slide state — opacity + ken-burns animation on active. Inactive
+     slides stay scaled 1.02 to keep the zoom-in feel on first reveal. */
+  .hero-slide {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+  .hero-slide.is-active {
+    opacity: 1;
+    animation: kenburns 8s ease-out forwards;
+  }
+  @keyframes kenburns {
+    from { transform: scale(1.02); }
+    to   { transform: scale(1.08); }
   }
 
-  /* Slide fade — the transition utility handles duration; the class
-     toggle drives the opacity state. */
-  .hero-slide { opacity: 0; }
-  .hero-slide.is-active { opacity: 1; }
-
-  /* Tick controls — created in JS, styled here. */
-  .tick {
-    width: 22px;
+  /* Dot controls — created in JS, styled here. */
+  .dot {
+    width: 32px;
     height: 2px;
-    background: rgba(251, 248, 242, 0.3);
+    background: rgba(251, 248, 242, 0.35);
     border: 0;
     padding: 0;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: background 0.25s, transform 0.25s;
   }
-  .tick.is-active { background: var(--color-surface); }
-  .tick:hover { background: rgba(251, 248, 242, 0.6); }
+  .dot.is-active {
+    background: var(--color-surface);
+    transform: scaleY(2);
+  }
+  .dot:hover { background: rgba(251, 248, 242, 0.7); }
 
-  /* Live indicator pulse */
-  .blip { animation: blip 1.6s ease-in-out infinite; }
-  @keyframes blip { 50% { opacity: 0.3; } }
-
-  /* Cream edge fades on the horizontal rail */
-  .rail-wrap::before,
-  .rail-wrap::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 56px;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .rail-wrap::before {
-    left: 0;
-    background: linear-gradient(90deg, var(--color-cream), rgba(245, 241, 234, 0));
-  }
-  .rail-wrap::after {
-    right: 0;
-    background: linear-gradient(270deg, var(--color-cream), rgba(245, 241, 234, 0));
-  }
-
-  /* Hide the rail scrollbar — controls happen via the arrow buttons */
+  /* Hide rail scrollbar — controls go through the arrow buttons. */
   .rail {
     scrollbar-width: none;
     scroll-behavior: smooth;
   }
   .rail::-webkit-scrollbar { display: none; }
 
-  /* Reduced-motion: kill the slide fade transition and the blip pulse,
-     and let JS skip the auto-rotate timer below. */
+  /* Reduced-motion: kill ken-burns + shorten the cross-fade. The JS
+     guard separately skips the auto-rotate timer. */
   @media (prefers-reduced-motion: reduce) {
-    .hero-slide { transition: none; }
-    .blip { animation: none; }
+    .hero-slide {
+      transition: opacity 200ms linear;
+    }
+    .hero-slide.is-active {
+      animation: none;
+      transform: none;
+    }
   }
 </style>
 
-<script is:inline define:vars={{ captions }}>
+<script>
   (function () {
-    const reduced =
+    const reduce =
       window.matchMedia &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const hero = document.querySelector("[data-hero-reel]");
+    const hero = document.querySelector<HTMLElement>("[data-hero]");
     if (hero) {
-      const slides = Array.from(hero.querySelectorAll("[data-slide]"));
-      const ticksWrap = hero.querySelector("[data-ticks]");
-      const frameId = hero.querySelector("[data-frame-id]");
-      let idx = 0;
-      let timer = null;
+      const slides = Array.from(
+        hero.querySelectorAll<HTMLElement>("[data-slide]"),
+      );
+      const dotsWrap = hero.querySelector<HTMLElement>("[data-dots]");
+      const cur = hero.querySelector<HTMLElement>("[data-slide-cur]");
 
-      slides.forEach((_, i) => {
-        const b = document.createElement("button");
-        b.className = "tick" + (i === 0 ? " is-active" : "");
-        b.type = "button";
-        b.setAttribute("aria-label", "Show slide " + (i + 1));
-        b.addEventListener("click", function () {
-          go(i, true);
+      if (slides.length && dotsWrap && cur) {
+        let idx = 0;
+        let timer: number | null = null;
+
+        slides.forEach((_, i) => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "dot" + (i === 0 ? " is-active" : "");
+          b.setAttribute("aria-label", "Show slide " + (i + 1));
+          b.addEventListener("click", () => go(i, true));
+          dotsWrap.appendChild(b);
         });
-        ticksWrap.appendChild(b);
-      });
-      const ticks = Array.from(ticksWrap.children);
+        const dots = Array.from(dotsWrap.children) as HTMLElement[];
 
-      function go(n, manual) {
-        slides[idx].classList.remove("is-active");
-        slides[idx].setAttribute("aria-hidden", "true");
-        ticks[idx].classList.remove("is-active");
-        idx = (n + slides.length) % slides.length;
-        slides[idx].classList.add("is-active");
-        slides[idx].setAttribute("aria-hidden", "false");
-        ticks[idx].classList.add("is-active");
-        frameId.textContent = captions[idx];
-        if (manual && timer) {
-          clearInterval(timer);
-          start();
+        function go(n: number, manual: boolean) {
+          slides[idx].classList.remove("is-active");
+          slides[idx].setAttribute("aria-hidden", "true");
+          dots[idx].classList.remove("is-active");
+          idx = (n + slides.length) % slides.length;
+          slides[idx].classList.add("is-active");
+          slides[idx].setAttribute("aria-hidden", "false");
+          dots[idx].classList.add("is-active");
+          cur!.textContent = String(idx + 1).padStart(2, "0");
+          if (manual && !reduce && timer !== null) {
+            clearInterval(timer);
+            start();
+          }
         }
+        function start() {
+          timer = window.setInterval(() => go(idx + 1, false), 5000);
+        }
+        if (!reduce) start();
       }
-
-      function start() {
-        if (reduced) return;
-        timer = setInterval(function () {
-          go(idx + 1, false);
-        }, 5000);
-      }
-      start();
     }
 
-    const rail = document.querySelector("[data-rail]");
-    const prev = document.querySelector("[data-rail-prev]");
-    const next = document.querySelector("[data-rail-next]");
+    const rail = document.querySelector<HTMLElement>("[data-rail]");
+    const prev = document.querySelector<HTMLElement>("[data-rail-prev]");
+    const next = document.querySelector<HTMLElement>("[data-rail-next]");
     if (rail && prev && next) {
-      prev.addEventListener("click", function () {
-        rail.scrollBy({ left: -340, behavior: "smooth" });
-      });
-      next.addEventListener("click", function () {
-        rail.scrollBy({ left: 340, behavior: "smooth" });
-      });
+      prev.addEventListener("click", () =>
+        rail.scrollBy({ left: -380, behavior: "smooth" }),
+      );
+      next.addEventListener("click", () =>
+        rail.scrollBy({ left: 380, behavior: "smooth" }),
+      );
     }
   })();
 </script>
