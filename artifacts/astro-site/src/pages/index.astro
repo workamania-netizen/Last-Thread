@@ -69,7 +69,7 @@ const totalSlides = String(heroSlides.length).padStart(2, "0");
     <div
       class="absolute left-12 right-12 bottom-[42px] z-[5] flex items-end justify-between gap-8 text-surface"
     >
-      <h1 class="font-serif font-medium text-5xl sm:text-6xl lg:text-[64px] leading-[1.02] tracking-[-0.015em] max-w-[760px] text-pretty text-surface">
+      <h1 class="tagline font-serif font-medium text-5xl sm:text-6xl lg:text-[64px] leading-[1.02] tracking-[-0.015em] max-w-[760px] text-pretty">
         For the men who<br />wear things out.
       </h1>
       <a
@@ -218,6 +218,15 @@ const totalSlides = String(heroSlides.length).padStart(2, "0");
 </BaseLayout>
 
 <style>
+  /* Global h1 color rule wins over Tailwind's text-surface utility
+     (utilities live in @layer utilities, this rule is unlayered), so
+     set the tagline color in scoped CSS. Shadow keeps it readable on
+     the brighter slides in the rotation. */
+  .tagline {
+    color: var(--color-surface);
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  }
+
   /* Two-stop legibility gradient. Top band is strengthened from the v2
      mockup spec (22%→0 over 18%) to 55%→0 over 22% so the surface-white
      overlay nav stays readable against any slide. Bottom band unchanged. */
